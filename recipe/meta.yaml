@@ -8,6 +8,10 @@ package:
 source:
   url: https://github.com/brandond/{{ name }}/archive/{{ version }}.tar.gz
   sha256: ada9105eab78e4f11081f13be63b61e1e9be80b705f6e132e05e4d7f7bfa429e
+  # pip metadata: pywin32 dist name (pypiwin32 doesn't exist in conda) + static
+  # version (tarball has no git metadata for version_command; else wheel says 0.0.0)
+  patches:
+    - patches/0001-fix-pip-metadata.patch
 
 build:
   skip: true  # [not win]
