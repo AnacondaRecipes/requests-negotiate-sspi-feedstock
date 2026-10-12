@@ -2,7 +2,7 @@
 {% set version = "0.5.3" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -11,8 +11,8 @@ source:
 
 build:
   skip: true  # [not win]
-  number: 6
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
@@ -21,12 +21,18 @@ requirements:
     - setuptools
   run:
     - python
+    # upstream requirements.txt pins pypiwin32 >=223 (a PyPI repack of pywin32);
+    # the conda package is pywin32
     - pywin32 >=223
     - requests >=2.0
 
 test:
   imports:
     - requests_negotiate_sspi
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
   home: https://github.com/brandond/requests-negotiate-sspi
@@ -34,6 +40,8 @@ about:
   license_family: Apache
   license_file: LICENSE.txt
   summary: Windows SSPI-based Negotiate authentication support for Requests
+  description: Single-Sign On HTTP Negotiate authentication using the requests library on Windows.
+  doc_url: https://pypi.org/project/requests-negotiate-sspi
   dev_url: https://github.com/brandond/requests-negotiate-sspi
 
 extra:
