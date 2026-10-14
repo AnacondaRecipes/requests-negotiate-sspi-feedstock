@@ -1,0 +1,36 @@
+From 2ef7f7c4006377e7343a99de20c6cc7f01901e71 Mon Sep 17 00:00:00 2001
+From: Steven <scrass@anaconda.com>
+Date: Mon, 12 Oct 2026 10:02:00 -0600
+Subject: [PATCH] Fix pip metadata for conda packaging
+
+- requirements.txt: pypiwin32 -> pywin32. pypiwin32 is an abandoned
+  PyPI-only repack of pywin32 (same modules: sspi, sspicon,
+  win32security, pywintypes); the conda package is pywin32 and
+  pip check cannot satisfy the pypiwin32 dist name.
+- setup.py: replace version_command (git describe) with a static
+  version. The source tarball carries no git metadata, so the wheel
+  would record 0.0.0.
+---
+ requirements.txt | 2 +-
+ setup.py         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/requirements.txt b/requirements.txt
+index 170452e..2e90031 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,2 +1,2 @@
+-pypiwin32 >= 223
++pywin32 >= 223
+ requests >= 2.0
+diff --git a/setup.py b/setup.py
+index 7fc359c..7f043af 100644
+--- a/setup.py
++++ b/setup.py
+@@ -43,5 +43,5 @@ setup(
+     packages=find_packages(exclude=('docs')),
+     provides=['requests_negotiate_sspi'],
+     url='https://github.com/brandond/requests-negotiate-sspi',
+-    version_command=('git describe --tags --dirty', 'pep440-git-full'),
++    version='0.5.3',
+ )
